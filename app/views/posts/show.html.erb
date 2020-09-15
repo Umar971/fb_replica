@@ -1,0 +1,13 @@
+<h1>Show Page</h1>
+
+<h3><%=@post.user.first_name%> <%=@post.user.last_name%><h3>
+<small><%= time_ago_in_words(@post.created_at) %> ago</small>
+<%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-sm btn-warning' %>
+<%= link_to 'Delete', post_path, method: :delete, data: {confirm: 'are you sure?'}, class: 'btn btn-sm btn-danger' %>
+<%= link_to 'Back', root_path, class: 'btn btn-sm btn-primary' %>
+
+<p><%= @post.body %></p>
+
+        <% @post.images.each do |image| %>
+            <%= image_tag(image, style: 'height:100px; width:200px;')%>
+        <% end %>

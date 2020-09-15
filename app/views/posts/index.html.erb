@@ -1,0 +1,42 @@
+<% @posts.each do |post| %>
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Title -->
+        <h4 class="mt-4"><%=link_to image_tag(post.user.avatar, class: "rounded-circle", style: 'height:50px; width:50px;'), profile_path(user_id: post.user.id)%> <%= link_to post.user.first_name + " " + post.user.last_name, profile_path(user_id: post.user.id), class: 'text-decoration-none' %>
+        
+        <% if post.user == current_user %>        
+            <%=link_to 'Delete', post_path(post), method: :delete, data: {confirm: 'Are you sure?'} ,class: 'btn btn-sm btn-danger float-right'%>
+            <%=link_to 'Edit', edit_post_path(post), class: 'btn btn-sm btn-warning float-right mr-2'%>
+        <% end %>
+        </h4>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p><%= time_ago_in_words(post.created_at) %> ago</p>
+        <hr>
+
+        <!-- Post Content -->
+        <p class="lead"><%= post.body %></p>
+        <hr>
+        
+        <!-- Preview Image -->
+        
+        <% post.images.each do |image| %>
+            <%= image_tag(image, style: 'height:400px; width:730px;')%> <br><br>
+        <% end %>
+        
+        <hr>
+      </div>
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+<% end %>

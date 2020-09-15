@@ -1,0 +1,7 @@
+<%= form_for @post do |f|%>
+    <%= f.label :body%> <br>
+    <%= f.text_area :body, class: 'form-control'%><br>
+	<%= f.label :images %><br>
+	<%= f.file_field :images, multiple: true %><br><br>
+    <%= f.submit class: 'btn btn-sm btn-primary mt-2' %><br>
+<% end %>
