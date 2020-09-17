@@ -8,4 +8,8 @@ module ApplicationHelper
         end
     end
 
+    def already_liked_by_user(user_id, post_id)
+        Like.where(user_id: user_id, post_id: post_id).exists?
+    end
+
 end

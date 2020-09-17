@@ -1,0 +1,6 @@
+<div class="form-horizontal">
+<%= form_for([post, post.comments.build], remote: true) do |form| %>
+    <%=form.text_area :body, size: "6x1" ,class: "form-control cmt_form" %>
+    <%= form.submit "send", class: "btn btn-sm btn-primary float-right" %>
+<% end %>
+</div>

@@ -1,325 +1,183 @@
-<!------ Include the above in your HEAD tag ---------->
-<div class='profile-page'>
-  
-  <% if @user.cover.attached? %>
-    <div class="page-header header-filter" data-parallax="true" style="background-image:url('<%= url_for @user.cover %>%');"></div>
-  <%else%>
-   <div class="page-header header-filter" data-parallax="true" style="background-image:url('https://i.pinimg.com/originals/e4/02/59/e4025992f83181ef484b3244aaf21252.jpg');"></div>
-  <% end %>
-
-    <div class="main main-raised">
-		<div class="profile-content">
-            <div class="container">
-                <div class="row">
-	                <div class="col-md-6 ml-auto mr-auto">
-        	           <div class="profile">
-	                        <div class="avatar">
-                <% if @user.avatar.attached? %>
-                            <%= image_tag @user.avatar, class: "img-raised rounded-circle img-fluid"%>
-                <%else%>
-                            <%= image_tag user_avatar(@user,100), class: "img-raised rounded-circle img-fluid"%>
-                <% end %>
-	                        </div>
-	                        <div class="name">
-	                            <h3 class="title"><%=@user.first_name%> <%=@user.last_name%></h3>
-								<h6><%=@user.bio%></h6>
-								<a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter"><i class="fa fa-twitter"></i></a>
-                                <a href="#pablo" class="btn btn-just-icon btn-link btn-pinterest"><i class="fa fa-pinterest"></i></a>
-	                        </div>
-	                    </div>
-    	            </div>
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <%=link_to 'Home', root_path, class: "breadcrumb-item"%>
+                            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                        </ol>
+                    </nav>
                 </div>
-                <div class="description text-center">
-                    <p><%= @user.about %></p>
-                </div>
-		    		<div class="row">
-              <%@user.posts.each do |post|%>
-                
-                <div class="container">
-
-                    <div class="row">
-
-                      <!-- Post Content Column -->
-                      <div class="col-lg-8">
-
-                        <!-- Title -->
-                        <h4 class="mt-4"><%=link_to image_tag(post.user.avatar, class: "rounded-circle", style: 'height:50px; width:50px;'), profile_path(user_id: post.user.id)%> <%= link_to post.user.first_name + " " + post.user.last_name, profile_path(user_id: post.user.id), class: 'text-decoration-none' %>
-                        
-                        <% if post.user == current_user %>        
-                            <%=link_to 'Delete', post_path(post), method: :delete, data: {confirm: 'Are you sure?'} ,class: 'btn btn-sm btn-danger float-right'%>
-                            <%=link_to 'Edit', edit_post_path(post), class: 'btn btn-sm btn-warning float-right mr-2'%>
-                        <% end %>
-                        </h4>
-
-                        <hr>
-
-                        <!-- Date/Time -->
-                        <p><%= time_ago_in_words(post.created_at) %> ago</p>
-                        <hr>
-
-                        <!-- Post Content -->
-                        <p class="lead"><%= post.body %></p>
-                        <hr>
-                        
-                        <!-- Preview Image -->
-                        
-                        <% post.images.each do |image| %>
-                            <%= image_tag(image, style: 'height:400px; width:730px;')%> <br><br>
-                        <% end %>
-                        
-                        <hr>
-                      </div>
-                    </div>
-                    <!-- /.row -->
-
-                  </div>
-                  <!-- /.container -->
-
-              <%end%>
-            </div>
-        
             </div>
         </div>
-	</div>
-    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
-<script>
-var big_image;
+        <% if @user.cover.attached? %>
+          <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url('<%= url_for @user.cover %>%');height: 350px;background-size: cover;"></div>
+        <% else %>
+          <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);height: 350px;background-size: cover;"></div>
+        <% end %>
+        <div class="card social-prof">
+            <div class="card-body">
+                <div class="wrapper">
+                <% if @user.avatar.attached? %>
+                    <%=image_tag @user.avatar, class: "user-profile"%>
+                <% else %>
+                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
+                <% end %>
+                    <h3><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></h3>
+                    <p><%=@user.bio.capitalize%></p>
+                </div>
+                <div class="row ">
+                    <div class="col-lg-12">
+                        <ul class=" nav nav-tabs justify-content-center s-nav">
+                            <li><a class="active" href="#">Timeline</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Friends</a></li>
+                            <li><a href="#">Photos</a></li>
+                            <li><a href="#">Videos</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="h5 text-blue"><%=@user.email%></div>
+                        <div class="h7 "><strong>Name :</strong><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></div>
+                        <div class="h7"><strong>About :</strong><%=@user.about%>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="h6 text-muted">Followers</div>
+                            <div class="h5">5.2342</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="h6 text-muted">Following</div>
+                            <div class="h5">6758</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="h6 text-muted">Themes</div>
+                            <div class="h5">6758</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 gedf-main">
+              <!--- \\\\\\\Post-->
+              <%@user.posts.each do |post|%>
+                  <div class="card social-timeline-card">
+                      <div class="card-header">
+                          <div class="d-flex justify-content-between align-items-center">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <div class="mr-2">
+                                    <% if @user.avatar.attached? %>
+                                        <%=link_to image_tag(@user.avatar, class: "rounded-circle", width: "45"), profile_path(user_id: post.user.id)%>
+                                    <% else %>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
+                                    <% end %> 
+                                  </div>
+                                  <div class="ml-2">
+                                      <div class="h5 m-0 text-blue"><%=@user.email%></div>
+                                      <div class="h7 text-muted"><%= @user.first_name.capitalize + " " + @user.last_name.capitalize%></div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="dropdown">
+                                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <i class="fa fa-ellipsis-h"></i>
+                                      </button>
+                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                                          <div class="h6 dropdown-header">Configuration</div>
+                                          <%= link_to ("<i class='fas fa-edit'> Edit</i>").html_safe, edit_post_path(post), class:"dropdown-item" %>
+                                          <%= link_to ("<i class='fas fa-trash'> Delete</i>").html_safe, post_path(post), method: :delete, data: {confirm: "are your sure" }, class:"dropdown-item" %>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card-body">
+                          <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i><%=time_ago_in_words(post.created_at)%> ago</div>
+                              <p>
+                                <%=post.body%>
+                              </p>
+                                      <!-- Preview Image -->
+                              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                              
+                                  <% post.images.each_with_index do |image, index| %>
+                                  
+                                      <li data-target="#carouselExampleIndicators" data-slide-to="<%=index%>" class="<%if index == 0 %> active <%end%>"></li>
+                                  
+                                  <%end%>
+                                  
+                                </ol>
+                                <div class="carousel-inner">
+                              
+                                  <% post.images.each_with_index do |image, index| %>
+                                  
+                                      <div class="carousel-item <%if index == 0 %> active <%end%>">
+                                  
+                                    <%= image_tag(image, class: "d-block w-100 h-10")%> <br><br>
+                                  
+                                      </div>
+                              
+                                  <%end%>
 
-$(document).ready(function() {
-  BrowserDetect.init();
-
-  // Init Material scripts for buttons ripples, inputs animations etc, more info on the next link https://github.com/FezVrasta/bootstrap-material-design#materialjs
-  $('body').bootstrapMaterialDesign();
-
-  window_width = $(window).width();
-
-  $navbar = $('.navbar[color-on-scroll]');
-  scroll_distance = $navbar.attr('color-on-scroll') || 500;
-
-  $navbar_collapse = $('.navbar').find('.navbar-collapse');
-
-  //  Activate the Tooltips
-  $('[data-toggle="tooltip"], [rel="tooltip"]').tooltip();
-
-  // Activate Popovers
-  $('[data-toggle="popover"]').popover();
-
-  if ($('.navbar-color-on-scroll').length != 0) {
-    $(window).on('scroll', materialKit.checkScrollForTransparentNavbar);
-  }
-
-  materialKit.checkScrollForTransparentNavbar();
-
-  if (window_width >= 768) {
-    big_image = $('.page-header[data-parallax="true"]');
-    if (big_image.length != 0) {
-      $(window).on('scroll', materialKit.checkScrollForParallax);
-    }
-
-  }
-
-
-});
-
-$(document).on('click', '.navbar-toggler', function() {
-  $toggle = $(this);
-
-  if (materialKit.misc.navbar_menu_visible == 1) {
-    $('html').removeClass('nav-open');
-    materialKit.misc.navbar_menu_visible = 0;
-    $('#bodyClick').remove();
-    setTimeout(function() {
-      $toggle.removeClass('toggled');
-    }, 550);
-
-    $('html').removeClass('nav-open-absolute');
-  } else {
-    setTimeout(function() {
-      $toggle.addClass('toggled');
-    }, 580);
-
-
-    div = '<div id="bodyClick"></div>';
-    $(div).appendTo("body").click(function() {
-      $('html').removeClass('nav-open');
-
-      if ($('nav').hasClass('navbar-absolute')) {
-        $('html').removeClass('nav-open-absolute');
-      }
-      materialKit.misc.navbar_menu_visible = 0;
-      $('#bodyClick').remove();
-      setTimeout(function() {
-        $toggle.removeClass('toggled');
-      }, 550);
-    });
-
-    if ($('nav').hasClass('navbar-absolute')) {
-      $('html').addClass('nav-open-absolute');
-    }
-
-    $('html').addClass('nav-open');
-    materialKit.misc.navbar_menu_visible = 1;
-  }
-});
-
-materialKit = {
-  misc: {
-    navbar_menu_visible: 0,
-    window_width: 0,
-    transparent: true,
-    fixedTop: false,
-    navbar_initialized: false,
-    isWindow: document.documentMode || /Edge/.test(navigator.userAgent)
-  },
-
-  initFormExtendedDatetimepickers: function() {
-    $('.datetimepicker').datetimepicker({
-      icons: {
-        time: "fa fa-clock-o",
-        date: "fa fa-calendar",
-        up: "fa fa-chevron-up",
-        down: "fa fa-chevron-down",
-        previous: 'fa fa-chevron-left',
-        next: 'fa fa-chevron-right',
-        today: 'fa fa-screenshot',
-        clear: 'fa fa-trash',
-        close: 'fa fa-remove'
-      }
-    });
-  },
-
-  initSliders: function() {
-    // Sliders for demo purpose
-    var slider = document.getElementById('sliderRegular');
-
-    noUiSlider.create(slider, {
-      start: 40,
-      connect: [true, false],
-      range: {
-        min: 0,
-        max: 100
-      }
-    });
-
-    var slider2 = document.getElementById('sliderDouble');
-
-    noUiSlider.create(slider2, {
-      start: [20, 60],
-      connect: true,
-      range: {
-        min: 0,
-        max: 100
-      }
-    });
-  },
-
-  checkScrollForParallax: function() {
-    oVal = ($(window).scrollTop() / 3);
-    big_image.css({
-      'transform': 'translate3d(0,' + oVal + 'px,0)',
-      '-webkit-transform': 'translate3d(0,' + oVal + 'px,0)',
-      '-ms-transform': 'translate3d(0,' + oVal + 'px,0)',
-      '-o-transform': 'translate3d(0,' + oVal + 'px,0)'
-    });
-  },
-
-  checkScrollForTransparentNavbar: debounce(function() {
-    if ($(document).scrollTop() > scroll_distance) {
-      if (materialKit.misc.transparent) {
-        materialKit.misc.transparent = false;
-        $('.navbar-color-on-scroll').removeClass('navbar-transparent');
-      }
-    } else {
-      if (!materialKit.misc.transparent) {
-        materialKit.misc.transparent = true;
-        $('.navbar-color-on-scroll').addClass('navbar-transparent');
-      }
-    }
-  }, 17)
-};
-
-// Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds. If `immediate` is passed, trigger the function on the
-// leading edge, instead of the trailing.
-
-function debounce(func, wait, immediate) {
-  var timeout;
-  return function() {
-    var context = this,
-      args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    }, wait);
-    if (immediate && !timeout) func.apply(context, args);
-  };
-};
-
-var BrowserDetect = {
-  init: function() {
-    this.browser = this.searchString(this.dataBrowser) || "Other";
-    this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "Unknown";
-  },
-  searchString: function(data) {
-    for (var i = 0; i < data.length; i++) {
-      var dataString = data[i].string;
-      this.versionSearchString = data[i].subString;
-
-      if (dataString.indexOf(data[i].subString) !== -1) {
-        return data[i].identity;
-      }
-    }
-  },
-  searchVersion: function(dataString) {
-    var index = dataString.indexOf(this.versionSearchString);
-    if (index === -1) {
-      return;
-    }
-
-    var rv = dataString.indexOf("rv:");
-    if (this.versionSearchString === "Trident" && rv !== -1) {
-      return parseFloat(dataString.substring(rv + 3));
-    } else {
-      return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
-    }
-  },
-
-  dataBrowser: [{
-      string: navigator.userAgent,
-      subString: "Chrome",
-      identity: "Chrome"
-    },
-    {
-      string: navigator.userAgent,
-      subString: "MSIE",
-      identity: "Explorer"
-    },
-    {
-      string: navigator.userAgent,
-      subString: "Trident",
-      identity: "Explorer"
-    },
-    {
-      string: navigator.userAgent,
-      subString: "Firefox",
-      identity: "Firefox"
-    },
-    {
-      string: navigator.userAgent,
-      subString: "Safari",
-      identity: "Safari"
-    },
-    {
-      string: navigator.userAgent,
-      subString: "Opera",
-      identity: "Opera"
-    }
-  ]
-
-};
-</script>
-</div>
+                                </div>
+                              
+                                  <% if post.images.count > 1 %>
+                                  
+                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                      <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                      <span class="sr-only">Next</span>
+                                    </a>
+                                  <% end %>
+                              </div>
+                          </div>
+                      <hr>
+                      <div class="card-footer">
+                        <small class="float-left likes-count-<%=post.id%>" id='likes_count'>
+                          <%= post.likes.count %> <%= (post.likes.count) == 1 ? 'Like' : 'Likes'%>
+                        </small>
+                        <small class="float-right comment-count-<%=post.id%>">
+                          <%if post.comments.count > 0 %> 
+                            <%= post.comments.count %> <%= (post.likes.count) == 1 ? 'Comment' : 'Comments'%> 
+                          <%end%>
+                        </small> 
+                      </div>
+                      <div class="card-footer">
+                        <span id="likes-<%=post.id%>">
+                          <% if already_liked_by_user(current_user.id, post.id) %>
+                            <%= link_to ('<i class="fas fa-thumbs-up"> Like</i>').html_safe, like_path(post), remote: true, method: :delete, class:"card-link"%>
+                          <% else %>
+                            <%= link_to ('<i class="fas fa-thumbs-up text-muted"> Like</i>').html_safe, post_likes_path(post), remote: true, method: :post, form: {style: 'display:inline-block;'}, class:"btn btn-link btn-sm text-muted text-decoration-none"%>
+                          <%end%>
+                        </span>
+                          <a class="card-link float-right"><i class="fa fa-comment"></i> Comment</a>
+                      </div>
+                    <section class="container">
+                      <div>
+                        <div id="comments-<%=post.id%>">
+                            <%= render 'comments/comment', comments: post.comments.last(5)%>
+                        </div>
+                        <%=link_to ('<i class="fa fa-list" aria-hidden="true"> Show all comments</i>').html_safe, post_path(post) %>
+                        <div class="comment-form">
+                            <%= render 'comments/form', post: post %>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+              <%end%>
+              <!-- Post /////-->
+            </div>
+        </div>
+    </div>
+</main>
