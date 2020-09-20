@@ -1,3 +1,4 @@
+<!-- Button trigger modal -->
 <div class="offset-lg-3 col-lg-6 gedf-main">
 
 <% @posts.each do |post| %>
@@ -15,11 +16,12 @@
                         <% end %> 
                     </div>
                     <div class="ml-2">
-                        <div class="h5 m-0 text-blue"><%=post.user.email%></div>
-                        <div class="h7 text-muted"><%=post.user.first_name%> <%=post.user.last_name%></div>
+                        <div class="h5 m-0 text-blue"><%=post.user.first_name%> <%=post.user.last_name%></div>
+                        <div class="h7 text-muted"><i class="far fa-clock"></i> <span> <%=time_ago_in_words(post.created_at)%> </span> ago</div>
                     </div>
                 </div>
                 <div>
+                  <% if post.user == current_user %>
                     <div class="dropdown">
                         <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-h"></i>
@@ -30,13 +32,13 @@
                             <%= link_to ("<i class='fas fa-trash'> Delete</i>").html_safe, post_path(post), method: :delete, data: {confirm: "are your sure" }, class:"dropdown-item" %>
                         </div>
                     </div>
+                  <% end %>
                 </div>
             </div>
         </div>
 
 
         <div class="card-body">
-            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i><%=time_ago_in_words(post.created_at)%> ago</div>
             <p class="card-text">
                 <%=post.body%>
             </p>
@@ -55,11 +57,8 @@
                       <% post.images.each_with_index do |image, index| %>
                       
                           <div class="carousel-item <%if index == 0 %> active <%end%>">
-                      
-                        <%= image_tag(image, class: "d-block w-100 h-10")%> <br><br>
-                      
+                              <%= image_tag(image, class: "d-block w-100 h-10")%>
                           </div>
-                  
                       <%end%>
 
                     </div>
@@ -96,7 +95,7 @@
                 <%= link_to ('<i class="fas fa-thumbs-up text-muted"> Like</i>').html_safe, post_likes_path(post), remote: true, method: :post, form: {style: 'display:inline-block;'}, class:"btn btn-link btn-sm text-muted text-decoration-none"%>
               <%end%>
             </span>
-              <a class="card-link float-right"><i class="fa fa-comment"></i> Comment</a>
+              <a class=" btn btn-link card-link float-right text-primary" onclick="myFunc(<%=post.id%>)"><i class="fa fa-comment"></i> Comment</a>
           </div>
           <section class="container">
           <div>
@@ -104,14 +103,28 @@
                 <%= render 'comments/comment', comments: post.comments.last(5)%>
             </div>
             <%=link_to ('<i class="fa fa-list" aria-hidden="true"> Show all comments</i>').html_safe, post_path(post) %>
-
+<hr>
             <div class="comment-form">
                 <%= render 'comments/form', post: post %>
             </div>
           </div>
         </section>
+</div>
+
+<br>
 
 <% end %>
 </div>
-<div class="col-lg-3 gedf-main">
-</div>
+<script>
+$(document).on("click", '[data-toggle="lightbox"]', function(event) {
+  event.preventDefault();
+  $(this).ekkoLightbox();
+});
+function myFunc(id){
+$(`#comments-${id}`).toggle();
+}
+
+function reply_func(id){
+  $(`#reply-${id}`).toggle();
+};
+</script>

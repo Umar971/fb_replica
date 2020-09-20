@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
     resources :likes, only: [:create]
   end
+  resources :comments, except: [:new, :create, :edit, :update, :show, :destroy] do
+    resources :replies, only: [:create, :destroy]
+  end
+
   resources :likes, only: [:destroy]
   resource :profile, only: [:show]
   root 'posts#index'

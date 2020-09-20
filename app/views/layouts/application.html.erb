@@ -64,3 +64,18 @@
   <%= yield %>
 </body>
 </html>
+
+
+<script>
+$(document).on("click", '[data-toggle="lightbox"]', function(event) {
+  event.preventDefault();
+  $(this).ekkoLightbox();
+});
+function myFunc(id){
+$(`#comments-${id}`).toggle();
+}
+
+function reply_func(id){
+  $(`#reply-${id}`).toggle();
+};
+</script>

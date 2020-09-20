@@ -1,0 +1,2 @@
+$('#replies-<%=@comment.id%>-div').html("<%= j render 'replies/reply', replies: @comment.replies.all%>");
+$('#rpl-<%=@comment.id%>-cmt').text(" " + <%=@comment.replies.count%>)

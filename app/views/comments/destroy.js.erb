@@ -1,1 +1,2 @@
 $('#comments-<%=@post.id%>').html("<%= j render 'comments/comment', comments: @comments%>");
+$('.comment-count-<%=@post.id%>').text(<%=@post.comments.count%> + " Comments")

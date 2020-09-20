@@ -13,7 +13,7 @@
             </div>
         </div>
         <% if @user.cover.attached? %>
-          <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url('<%= url_for @user.cover %>%');height: 350px;background-size: cover;"></div>
+            <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url('<%= url_for @user.cover %>%');height: 350px;background-size: cover;"></div>
         <% else %>
           <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);height: 350px;background-size: cover;"></div>
         <% end %>
@@ -21,12 +21,63 @@
             <div class="card-body">
                 <div class="wrapper">
                 <% if @user.avatar.attached? %>
-                    <%=image_tag @user.avatar, class: "user-profile"%>
+                    <button type="button" class="btn btn-link " data-toggle="modal" data-target="#exampleModal">
+                      <%=image_tag @user.avatar, class: "user-profile"%>
+                    </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Profile Photo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <%=image_tag @user.avatar, class: "user-profile"%>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 <% else %>
-                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal">
+                      <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
+                    </button>
+                      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Profile Photo</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 <% end %>
+                <!-- Button trigger modal -->
+                
+                <% if @user.first_name %>                
                     <h3><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></h3>
+                <% else %>
+                    <h3>Add your name</h3>
+                <% end %>
+                
+                <% if @user.bio %>
                     <p><%=@user.bio.capitalize%></p>
+                <% else %>
+                <p>Add your bio</p>
+                <% end %>
                 </div>
                 <div class="row ">
                     <div class="col-lg-12">
@@ -86,6 +137,7 @@
                                   </div>
                               </div>
                               <div>
+                              <% if post.user == current_user%>
                                   <div class="dropdown">
                                       <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <i class="fa fa-ellipsis-h"></i>
@@ -96,11 +148,14 @@
                                           <%= link_to ("<i class='fas fa-trash'> Delete</i>").html_safe, post_path(post), method: :delete, data: {confirm: "are your sure" }, class:"dropdown-item" %>
                                       </div>
                                   </div>
+                                  
+                                  <% end %>
+                                  
                               </div>
                           </div>
                       </div>
                       <div class="card-body">
-                          <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i><%=time_ago_in_words(post.created_at)%> ago</div>
+                          <div class="text-muted h7 mb-2"> <i class="far fa-clock"></i><%=time_ago_in_words(post.created_at)%> ago</div>
                               <p>
                                 <%=post.body%>
                               </p>
@@ -161,7 +216,7 @@
                             <%= link_to ('<i class="fas fa-thumbs-up text-muted"> Like</i>').html_safe, post_likes_path(post), remote: true, method: :post, form: {style: 'display:inline-block;'}, class:"btn btn-link btn-sm text-muted text-decoration-none"%>
                           <%end%>
                         </span>
-                          <a class="card-link float-right"><i class="fa fa-comment"></i> Comment</a>
+                          <a class=" btn btn-link card-link float-right text-primary" onclick="myFunc(<%=post.id%>)"><i class="fa fa-comment"></i> Comment</a>
                       </div>
                     <section class="container">
                       <div>
@@ -169,6 +224,7 @@
                             <%= render 'comments/comment', comments: post.comments.last(5)%>
                         </div>
                         <%=link_to ('<i class="fa fa-list" aria-hidden="true"> Show all comments</i>').html_safe, post_path(post) %>
+                        <hr>
                         <div class="comment-form">
                             <%= render 'comments/form', post: post %>
                         </div>
@@ -181,3 +237,13 @@
         </div>
     </div>
 </main>
+
+<script>
+$(document).on("click", '[data-toggle="lightbox"]', function(event) {
+  event.preventDefault();
+  $(this).ekkoLightbox();
+});
+function myFunc(id){
+$(`#comments-${id}`).toggle();
+}
+</script>

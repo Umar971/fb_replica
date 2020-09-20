@@ -1,0 +1,3 @@
+$('.rpl-form').val("");
+$('#rpl-<%=@comment.id%>-cmt').text(" " + <%=@comment.replies.count%>)
+$('#replies-<%=@comment.id%>-div').html("<%= j render 'replies/reply', replies: @comment.replies.all%>");

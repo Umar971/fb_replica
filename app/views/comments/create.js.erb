@@ -1,3 +1,3 @@
 $('.cmt_form').val("");
-console.log($('.comment-count-<%=@post.id%>').text(<%=@post.comments.count%> + " Comments"))
+$('.comment-count-<%=@post.id%>').text(<%=@post.comments.count%> + " Comments")
 $('#comments-<%=@post.id%>').html("<%= j render 'comments/comment', comments: @comments%>");
