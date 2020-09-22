@@ -82,11 +82,29 @@
                 <div class="row ">
                     <div class="col-lg-12">
                         <ul class=" nav nav-tabs justify-content-center s-nav">
-                            <li><a class="active" href="#">Timeline</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Friends</a></li>
-                            <li><a href="#">Photos</a></li>
-                            <li><a href="#">Videos</a></li>
+                        <% request_object = get_specific_request(@user.id)[0]%>
+                        <% received_request = received_request(@user.id)[0] %>
+                        <% if !@request%>
+                          <% if current_user != @user and !friend?(@user.id) and received_request.nil?%>
+                            <%=link_to ('<i class="fa fa-user-plus fa-lg" aria-hidden="true"></i>').html_safe, requests_path(receiver_id: @user.id), method: :post, class: "btn btn-link active"%> &nbsp
+                          <% end %>
+                        <% end %>
+                        <% if @request and !friend?(@user.id)%>
+                          <% if @request.receiver_id == @user.id and @request.sender_id == current_user.id %>
+                              <%=link_to ('<i class="fa fa-user-clock fa-lg" aria-hidden="true"></i>').html_safe, request.referer, class: "btn btn-link active", style: "color: blue !important;"%> &nbsp
+                          <%end%>
+                        <%end%>
+                          <% if friend?(@user.id) %>
+                            <%= link_to ('<i class="fa fa-user-check fa-lg active" style="color: blue;"></i>').html_safe, request_path(request_object.id), method: :delete, data: {confirm: "are youo sure to unfriend?"} %>
+                          <% end %>
+                          <% if received_request.present? %>
+                            <%= link_to 'Accept', request_path(received_request.id), method: :patch, class: "btn btn-sm btn-primary"%>
+                            <%= link_to 'Reject', request_path(received_request.id), method: :delete, class: "btn btn-sm btn-danger"%>
+                          <% end %>
+                        
+                        <% if current_user == @user %>
+                            <li><%= link_to ('<i class="fas fa-user-edit fa-lg"></i>').html_safe, edit_user_registration_path, class: "btn btn-link active" %></li> &nbsp
+                        <% end %>
                         </ul>
                     </div>
                 </div>
@@ -103,20 +121,35 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <div class="h6 text-muted">Followers</div>
-                            <div class="h5">5.2342</div>
+                            <div class="h6 text-muted"> <a onMouseOver="this.style.color='blue'" onMouseOut="this.style.color='gray'" onclick="toggle_friends_list();" > Friends </a></div>
+                            <% all_friends = get_all_friends(@user.id)%>
+                            <div class="h5"><%= all_friends.count%></div>
+                            <% all_friends.each do |friend| %>
+                              <div class="card social-timeline-card friends_list">
+                                  <div class="card-body">
+                                      <ul class="friend-list">
+                                          <li>
+                                              <div class="left">
+                                                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                                              </div>
+                                              <div class="right">
+                                                  <h3><%=friend%></h3>
+                                                  <p>10 Friends</p>
+                                              </div>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                            <% end %>
                         </li>
                         <li class="list-group-item">
-                            <div class="h6 text-muted">Following</div>
-                            <div class="h5">6758</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="h6 text-muted">Themes</div>
-                            <div class="h5">6758</div>
+                            <div class="h6 text-muted">Posts</div>
+                            <div class="h5"><%= @user.posts.count%> </div>
                         </li>
                     </ul>
                 </div>
             </div>
+
             <div class="col-lg-6 gedf-main">
               <!--- \\\\\\\Post-->
               <%@user.posts.each do |post|%>
@@ -132,8 +165,8 @@
                                     <% end %> 
                                   </div>
                                   <div class="ml-2">
-                                      <div class="h5 m-0 text-blue"><%=@user.email%></div>
-                                      <div class="h7 text-muted"><%= @user.first_name.capitalize + " " + @user.last_name.capitalize%></div>
+                                      <div class="h5 m-0 text-blue"><%= link_to @user.first_name.capitalize + " " + @user.last_name.capitalize, profile_path(user_id: post.user.id) %></div>
+                                      <div class="h7 text-muted"><i class="far fa-clock"></i> <span> <%=time_ago_in_words(post.created_at)%> </span> ago</div>
                                   </div>
                               </div>
                               <div>
@@ -232,18 +265,58 @@
                     </section>
                   </div>
               <%end%>
-              <!-- Post /////-->
             </div>
-        </div>
+              <div class="col-lg-3">
+                <div class="card social-timeline-card">
+                    <div class="card-body">
+              
+                      <% friend_requests = get_all_friend_requests(current_user.id)%>
+                      <% senders = get_all_senders(friend_requests) %>
+                              <h5 class="card-title">Friend Request</h5>
+                      <% if friend_requests.present? %>
+                              <ul class="friend-list">
+
+                              <% senders.each_with_index do |sender, index| %>
+                                  <li>
+                                      <div class="left">
+                                      <% if sender.avatar.attached?%>
+                                        <%= link_to image_tag(sender.avatar), profile_path(user_id: sender.id)%>
+                                      <%else%>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
+                                      <% end %>
+
+                                      </div>
+                                      <div class="right">
+                                          <h3><%= sender.first_name + " " + sender.last_name%></h3>
+                                          <%= link_to 'Accept', request_path(friend_requests[index]), method: :patch, class: "btn btn-sm btn-primary"%>
+                                          <%= link_to 'Reject', request_path(friend_requests[index]), method: :delete, class: "btn btn-sm btn-danger"%>
+                                      </div>
+                                  </li>
+                                  <hr>
+                              <% end %>
+                              </ul>
+                      <% else %>
+                          <p>No friend requests</p>
+                      <% end %>
+                    </div>
+                </div>
+            </div>
+
     </div>
 </main>
 
 <script>
-$(document).on("click", '[data-toggle="lightbox"]', function(event) {
-  event.preventDefault();
-  $(this).ekkoLightbox();
-});
-function myFunc(id){
-$(`#comments-${id}`).toggle();
-}
+  $(document).on("click", '[data-toggle="lightbox"]', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+  });
+  function myFunc(id){
+  $(`#comments-${id}`).toggle();
+  }
+
+  $('.friends_list').hide();
+
+  function toggle_friends_list(){
+    $('.friends_list').toggle();
+  }
 </script>

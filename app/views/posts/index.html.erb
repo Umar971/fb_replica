@@ -1,5 +1,24 @@
-<!-- Button trigger modal -->
-<div class="offset-lg-3 col-lg-6 gedf-main">
+<div class = "row">
+              <div class="col-lg-3">
+                <div class="card social-timeline-card">
+                    <div class="card-body">
+                        <h5 class="card-title">People you may know</h5>
+                        <ul class="friend-list">
+                            <li>
+                                <div class="left">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                                </div>
+                                <div class="right">
+                                    <h3>John Doe</h3>
+                                    <p>10 Friends</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+              </div>
+
+<div class="col-lg-6 gedf-main">
 
 <% @posts.each do |post| %>
   <!-- Page Content -->
@@ -110,11 +129,50 @@
           </div>
         </section>
 </div>
-
 <br>
 
 <% end %>
 </div>
+
+              <div class="col-lg-3">
+                <div class="card social-timeline-card">
+                    <div class="card-body">
+                    <% friend_requests = get_all_friend_requests(current_user.id)%>
+                      <% senders = get_all_senders(friend_requests) %>
+                              <h5 class="card-title">Friend Request</h5>
+                      <% if friend_requests.present? %>
+                              <ul class="friend-list">
+
+                              <% senders.each_with_index do |sender, index| %>
+                                  <li>
+                                      <div class="left">
+                                      <% if sender.avatar.attached?%>
+                                        <%= link_to image_tag(sender.avatar), profile_path(user_id: sender.id)%>
+                                      <%else%>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
+                                      <% end %>
+
+                                      </div>
+                                      <div class="right">
+                                          <h3><%= sender.first_name + " " + sender.last_name%></h3>
+                                          <%= link_to 'Accept', request_path(friend_requests[index]), method: :patch, class: "btn btn-sm btn-primary"%>
+                                          <%= link_to 'Reject', request_path(friend_requests[index]), method: :delete, class: "btn btn-sm btn-danger"%>
+                                      </div>
+                                  </li>
+                                  <hr>
+                              <% end %>
+                              </ul>
+                      <% else %>
+                          <p>No friend requests</p>
+                      <% end %>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
 <script>
 $(document).on("click", '[data-toggle="lightbox"]', function(event) {
   event.preventDefault();

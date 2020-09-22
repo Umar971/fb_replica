@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :replies, only: [:create, :destroy]
   end
 
+  resources :requests, only: [:create, :destroy, :update]
   resources :likes, only: [:destroy]
   resource :profile, only: [:show]
   root 'posts#index'

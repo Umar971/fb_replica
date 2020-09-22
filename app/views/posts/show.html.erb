@@ -13,8 +13,8 @@
                         <% end %> 
                     </div>
                     <div class="ml-2">
-                        <div class="h5 m-0 text-blue"><%=@post.user.email%></div>
-                        <div class="h7 text-muted"><%=@post.user.first_name%> <%=@post.user.last_name%></div>
+                        <div class="h5 m-0 text-blue"><%= link_to @post.user.first_name.capitalize + " " + @post.user.last_name.capitalize, profile_path(user_id: @post.user.id) %></div>
+                        <div class="h7 text-muted"><i class="far fa-clock"></i> <%=time_ago_in_words(@post.created_at)%> ago</div>
                     </div>
                 </div>
                 <div>

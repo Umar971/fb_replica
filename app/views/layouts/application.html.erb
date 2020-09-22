@@ -25,7 +25,6 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <% if user_signed_in?%>
@@ -42,6 +41,10 @@
           </div>
         </li>
         <% end %>
+        <span class="fa-stack fa-xs mt-2" data-count="28">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
+        </span>
         <% if user_signed_in? %>
           <li class="nav-item">
           <%=link_to 'Log Out', destroy_user_session_path, method: :delete, class: "nav-link"%>
@@ -54,9 +57,8 @@
           <%=link_to 'Sign Up', new_user_registration_path, class: "nav-link"%>
           </li>
         <% end %>
-        
+        </div>
       </ul>
-    </div>
   </nav>
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
