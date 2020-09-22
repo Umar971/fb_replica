@@ -34,7 +34,16 @@ module ApplicationHelper
     end
     
     def get_all_friends(user_id)
-        Request.where("(receiver_id = #{user_id} or sender_id = #{user_id}) and status = 'a'")        
+        Request.where("(receiver_id = #{user_id} or sender_id = #{user_id}) and status = 'a'")
     end
 
+    def get_friend(id)
+        User.find_by(id: id)
+    end
+
+    def request_sent?(user_id)
+        Request.where("(receiver_id = #{user_id} or sender_id = #{user_id}) and status = 'p'").present?
+    end
+    
+    
 end

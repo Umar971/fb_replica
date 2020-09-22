@@ -84,15 +84,13 @@
                         <ul class=" nav nav-tabs justify-content-center s-nav">
                         <% request_object = get_specific_request(@user.id)[0]%>
                         <% received_request = received_request(@user.id)[0] %>
-                        <% if !@request%>
+                        <% if !request_sent?(@user.id)%>
                           <% if current_user != @user and !friend?(@user.id) and received_request.nil?%>
                             <%=link_to ('<i class="fa fa-user-plus fa-lg" aria-hidden="true"></i>').html_safe, requests_path(receiver_id: @user.id), method: :post, class: "btn btn-link active"%> &nbsp
                           <% end %>
                         <% end %>
-                        <% if @request and !friend?(@user.id)%>
-                          <% if @request.receiver_id == @user.id and @request.sender_id == current_user.id %>
+                        <% if request_sent?(@user.id) and !friend?(@user.id) and current_user != @user and !received_request.present? %>
                               <%=link_to ('<i class="fa fa-user-clock fa-lg" aria-hidden="true"></i>').html_safe, request.referer, class: "btn btn-link active", style: "color: blue !important;"%> &nbsp
-                          <%end%>
                         <%end%>
                           <% if friend?(@user.id) %>
                             <%= link_to ('<i class="fa fa-user-check fa-lg active" style="color: blue;"></i>').html_safe, request_path(request_object.id), method: :delete, data: {confirm: "are youo sure to unfriend?"} %>
@@ -121,26 +119,9 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <div class="h6 text-muted"> <a onMouseOver="this.style.color='blue'" onMouseOut="this.style.color='gray'" onclick="toggle_friends_list();" > Friends </a></div>
+                            <div class="h6 text-muted"> <%= link_to " Friends", friends_profile_path(user_id: @user)%> </div>
                             <% all_friends = get_all_friends(@user.id)%>
                             <div class="h5"><%= all_friends.count%></div>
-                            <% all_friends.each do |friend| %>
-                              <div class="card social-timeline-card friends_list">
-                                  <div class="card-body">
-                                      <ul class="friend-list">
-                                          <li>
-                                              <div class="left">
-                                                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
-                                              </div>
-                                              <div class="right">
-                                                  <h3><%=friend%></h3>
-                                                  <p>10 Friends</p>
-                                              </div>
-                                          </li>
-                                      </ul>
-                                  </div>
-                              </div>
-                            <% end %>
                         </li>
                         <li class="list-group-item">
                             <div class="h6 text-muted">Posts</div>
@@ -312,11 +293,5 @@
   });
   function myFunc(id){
   $(`#comments-${id}`).toggle();
-  }
-
-  $('.friends_list').hide();
-
-  function toggle_friends_list(){
-    $('.friends_list').toggle();
   }
 </script>

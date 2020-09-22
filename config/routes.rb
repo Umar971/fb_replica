@@ -10,6 +10,10 @@ Rails.application.routes.draw do
 
   resources :requests, only: [:create, :destroy, :update]
   resources :likes, only: [:destroy]
-  resource :profile, only: [:show]
+  resource :profile, only: [:show] do 
+    collection do
+      get :friends
+    end
+  end
   root 'posts#index'
 end
