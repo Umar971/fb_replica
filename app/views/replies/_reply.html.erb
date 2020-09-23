@@ -2,11 +2,11 @@
 <% if replies %>
     <% replies.each do |reply| %>
         <div class="media card-footer">
-        <% if reply.user.avatar.attached? %>
-            <%=link_to image_tag(reply.user.avatar, class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: reply.user.id)%>
-        <% else %>
-            <%=link_to image_tag("https://bootdey.com/img/Content/avatar/avatar6.png", class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: reply.user.id)%>
-        <% end %>
+            <% if reply.user.avatar.attached? %>
+                <%=link_to image_tag(reply.user.avatar, class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: reply.user.id)%>
+            <% else %>
+                <%=link_to image_tag("https://bootdey.com/img/Content/avatar/avatar6.png", class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: reply.user.id)%>
+            <% end %>
             <div class="media-body">
                 <h5 class="mt-0"><%= link_to reply.user.first_name + " " + reply.user.last_name, profile_path(user_id: reply.user.id), class: 'text-decoration-none' %></h5>
                 <%= reply.body %>

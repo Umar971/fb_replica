@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
     before_action :set_post
-    before_action :set_comment, only: [:destroy]
+    before_action :set_comment, only: [:destroy]    
 
     def create
         comment = @post.comments.create(params[:comment].permit(:body))
@@ -13,7 +13,6 @@ class CommentsController < ApplicationController
         @comment.destroy
         @comments = @post.comments.last(5)
     end
-    
 
     private
         def set_post

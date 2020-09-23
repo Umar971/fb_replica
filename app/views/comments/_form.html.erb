@@ -1,12 +1,12 @@
 <div class="form-horizontal mb-3 d-flex justify-content-center">
-<%= form_for([post, post.comments.build], remote: true) do |form| %>
-<div class="col-lg-10 float-left">
-    <%=form.text_area :body, rows: "1",class: "form-control cmt_form", onkeyup: "textAreaAdjust(this)" %>
-</div>
-<div class="col-lg-2 float-right">
-        <%= form.submit "Send",class: "btn btn-sm btn-primary" %>
-</div>
-<% end %>
+    <%= form_for([post, post.comments.build], remote: true) do |form| %>
+        <div class="col-lg-10 float-left">
+            <%=form.text_area :body, rows: "1",class: "form-control cmt_form", onkeyup: "textAreaAdjust(this)" %>
+        </div>
+        <div class="col-lg-2 float-right">
+            <%= form.submit "Send",class: "btn btn-sm btn-primary" %>
+        </div>
+    <% end %>
 </div>
 
 <script>

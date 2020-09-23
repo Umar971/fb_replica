@@ -1,6 +1,7 @@
 class RequestsController < ApplicationController
 
     before_action :set_request, only: [:update, :destroy]
+    
     def create
         @request = Request.create
         @request.sender_id = current_user.id
@@ -9,7 +10,6 @@ class RequestsController < ApplicationController
         @request.save
         redirect_to request.referer
     end
-    
 
     def update
         if @request
@@ -22,7 +22,6 @@ class RequestsController < ApplicationController
         @request.destroy
         redirect_to request.referer
     end
-    
     
     private
 

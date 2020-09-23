@@ -1,12 +1,11 @@
-
 <% if comments %>
     <% comments.each do |comment| %>
         <div class="media card-footer">
-        <% if comment.user.avatar.attached? %>
-            <%=link_to image_tag(comment.user.avatar, class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: comment.user.id)%>
-        <% else %>
-            <%=link_to image_tag("https://bootdey.com/img/Content/avatar/avatar6.png", class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: comment.user.id)%>
-        <% end %>
+            <% if comment.user.avatar.attached? %>
+                <%=link_to image_tag(comment.user.avatar, class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: comment.user.id)%>
+            <% else %>
+                <%=link_to image_tag("https://bootdey.com/img/Content/avatar/avatar6.png", class: "d-flex mr-3 rounded-circle", style: 'height:40px; width:40px;'), profile_path(user_id: comment.user.id)%>
+            <% end %>
             <div class="media-body">
                 <h5 class="mt-0"><%= link_to comment.user.first_name + " " + comment.user.last_name, profile_path(user_id: comment.user.id), class: 'text-decoration-none' %></h5>
                 <%= comment.body %>
@@ -14,16 +13,14 @@
                 <small>
                     <i class="far fa-clock"> <%= time_ago_in_words(comment.created_at)%> ago</i>
                 </small>
-            </div>
-            
+            </div>    
             <% if comment.user == current_user %>
-            <%= link_to ('<i class="fa fa-trash" aria-hidden="true" style="font-size:16px;" ></i>').html_safe, [comment.post, comment], remote: true, method: :delete, class: "button is-danger", data: { confirm: 'Are you sure?' }, class: 'btn btn-link', style: " border: none; outline:none;" %>
+                <%= link_to ('<i class="fa fa-trash" aria-hidden="true" style="font-size:16px;" ></i>').html_safe, [comment.post, comment], remote: true, method: :delete, class: "button is-danger", data: { confirm: 'Are you sure?' }, class: 'btn btn-link', style: " border: none; outline:none;" %>
             <% end %>
             <a class="btn btn-link" onclick="reply_func(<%=comment.id%>)"><i class="fa fa-reply"></i><span id="rpl-<%=comment.id%>-cmt">   <%=comment.replies.count%></span></a>
         </div>
         <br>
-        <div class="reply-form" id="reply-<%=comment.id%>">
-            
+        <div class="reply-form" id="reply-<%=comment.id%>">    
             <div class="offset-lg-1 col-lg-11" id="replies-<%=comment.id%>-div">
                 <%= render 'replies/reply', replies: comment.replies.all%>
             </div>
@@ -33,6 +30,7 @@
         </div>
     <% end %>
 <% end %>
+
 <script>
 $('.reply-form').hide();
 </script>

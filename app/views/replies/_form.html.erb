@@ -1,27 +1,12 @@
 <div class="form-horizontal mb-3 d-flex justify-content-center">
-<%= form_for([comment, comment.replies.build], remote: true) do |form| %>
-
-<% if comment.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(comment.errors.count, "error") %> prohibited
-        this comment from being saved:
-      </h2>
-      <ul>
-        <% comment.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
+  <%= form_for([comment, comment.replies.build], remote: true) do |form| %>
+    <div class="col-lg-10 float-left">
+      <%=form.text_area :body, rows: "1", class: "form-control rpl-form", onkeyup: "textAreaAdjust(this)" %>
+    </div>
+    <div class="col-lg-2 float-right">
+      <%= form.submit "Reply", class: "btn btn-sm btn-primary" %>
     </div>
   <% end %>
-
-<div class="col-lg-10 float-left">
-    <%=form.text_area :body, rows: "1",class: "form-control rpl-form", onkeyup: "textAreaAdjust(this)" %>
-</div>
-<div class="col-lg-2 float-right">
-        <%= form.submit "Reply",class: "btn btn-sm btn-primary" %>
-</div>
-<% end %>
 </div>
 
 <script>
@@ -29,5 +14,4 @@ function textAreaAdjust(element) {
     element.style.height = "1px";
     element.style.height = (25+element.scrollHeight)+"px";
 }
-
 </script>

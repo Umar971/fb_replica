@@ -1,288 +1,259 @@
 <main>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="top-breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <%=link_to 'Home', root_path, class: "breadcrumb-item"%>
-                            <li class="breadcrumb-item active" aria-current="page">Profile</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="top-breadcrumb">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <%=link_to 'Home', root_path, class: "breadcrumb-item"%>
+              <li class="breadcrumb-item active" aria-current="page">Profile</li>
+            </ol>
+          </nav>
         </div>
-        <% if @user.cover.attached? %>
-            <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url('<%= url_for @user.cover %>%');height: 350px;background-size: cover;"></div>
-        <% else %>
-          <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);height: 350px;background-size: cover;"></div>
-        <% end %>
-        <div class="card social-prof">
-            <div class="card-body">
-                <div class="wrapper">
-                <% if @user.avatar.attached? %>
-                    <button type="button" class="btn btn-link " data-toggle="modal" data-target="#exampleModal">
-                      <%=image_tag @user.avatar, class: "user-profile"%>
+      </div>
+    </div>
+    <% if @user.cover.attached? %>
+      <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url('<%= url_for @user.cover %>%');height: 350px;background-size: cover;"></div>
+    <% else %>
+      <div class="img" style=" background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);height: 350px;background-size: cover;"></div>
+    <% end %>
+    <div class="card social-prof">
+      <div class="card-body">
+        <div class="wrapper">
+          <% if @user.avatar.attached? %>
+            <button type="button" class="btn btn-link " data-toggle="modal" data-target="#exampleModal">
+              <%=image_tag @user.avatar, class: "user-profile"%>
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Profile Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
                     </button>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Profile Photo</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <%=image_tag @user.avatar, class: "user-profile"%>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                <% else %>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal">
-                      <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
-                    </button>
-                      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Profile Photo</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                <% end %>
-                <!-- Button trigger modal -->
-                
-                <% if @user.first_name %>                
-                    <h3><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></h3>
-                <% else %>
-                    <h3>Add your name</h3>
-                <% end %>
-                
-                <% if @user.bio %>
-                    <p><%=@user.bio.capitalize%></p>
-                <% else %>
-                <p>Add your bio</p>
-                <% end %>
-                </div>
-                <div class="row ">
-                    <div class="col-lg-12">
-                        <ul class=" nav nav-tabs justify-content-center s-nav">
-                        <% request_object = get_specific_request(@user.id)[0]%>
-                        <% received_request = received_request(@user.id)[0] %>
-                        <% if !request_sent?(@user.id)%>
-                          <% if current_user != @user and !friend?(@user.id) and received_request.nil?%>
-                            <%=link_to ('<i class="fa fa-user-plus fa-lg" aria-hidden="true"></i>').html_safe, requests_path(receiver_id: @user.id), method: :post, class: "btn btn-link active"%> &nbsp
-                          <% end %>
-                        <% end %>
-                        <% if request_sent?(@user.id) and !friend?(@user.id) and current_user != @user and !received_request.present? %>
-                              <%=link_to ('<i class="fa fa-user-clock fa-lg" aria-hidden="true"></i>').html_safe, request.referer, class: "btn btn-link active", style: "color: blue !important;"%> &nbsp
-                        <%end%>
-                          <% if friend?(@user.id) %>
-                            <%= link_to ('<i class="fa fa-user-check fa-lg active" style="color: blue;"></i>').html_safe, request_path(request_object.id), method: :delete, data: {confirm: "are youo sure to unfriend?"} %>
-                          <% end %>
-                          <% if received_request.present? %>
-                            <%= link_to 'Accept', request_path(received_request.id), method: :patch, class: "btn btn-sm btn-primary"%>
-                            <%= link_to 'Reject', request_path(received_request.id), method: :delete, class: "btn btn-sm btn-danger"%>
-                          <% end %>
-                        
-                        <% if current_user == @user %>
-                            <li><%= link_to ('<i class="fas fa-user-edit fa-lg"></i>').html_safe, edit_user_registration_path, class: "btn btn-link active" %></li> &nbsp
-                        <% end %>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="h5 text-blue"><%=@user.email%></div>
-                        <div class="h7 "><strong>Name :</strong><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></div>
-                        <div class="h7"><strong>About :</strong><%=@user.about%>
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="h6 text-muted"> <%= link_to " Friends", friends_profile_path(user_id: @user)%> </div>
-                            <% all_friends = get_all_friends(@user.id)%>
-                            <div class="h5"><%= all_friends.count%></div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="h6 text-muted">Posts</div>
-                            <div class="h5"><%= @user.posts.count%> </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-lg-6 gedf-main">
-              <!--- \\\\\\\Post-->
-              <%@user.posts.each do |post|%>
-                  <div class="card social-timeline-card">
-                      <div class="card-header">
-                          <div class="d-flex justify-content-between align-items-center">
-                              <div class="d-flex justify-content-between align-items-center">
-                                  <div class="mr-2">
-                                    <% if @user.avatar.attached? %>
-                                        <%=link_to image_tag(@user.avatar, class: "rounded-circle", width: "45"), profile_path(user_id: post.user.id)%>
-                                    <% else %>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
-                                    <% end %> 
-                                  </div>
-                                  <div class="ml-2">
-                                      <div class="h5 m-0 text-blue"><%= link_to @user.first_name.capitalize + " " + @user.last_name.capitalize, profile_path(user_id: post.user.id) %></div>
-                                      <div class="h7 text-muted"><i class="far fa-clock"></i> <span> <%=time_ago_in_words(post.created_at)%> </span> ago</div>
-                                  </div>
-                              </div>
-                              <div>
-                              <% if post.user == current_user%>
-                                  <div class="dropdown">
-                                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <i class="fa fa-ellipsis-h"></i>
-                                      </button>
-                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                          <div class="h6 dropdown-header">Configuration</div>
-                                          <%= link_to ("<i class='fas fa-edit'> Edit</i>").html_safe, edit_post_path(post), class:"dropdown-item" %>
-                                          <%= link_to ("<i class='fas fa-trash'> Delete</i>").html_safe, post_path(post), method: :delete, data: {confirm: "are your sure" }, class:"dropdown-item" %>
-                                      </div>
-                                  </div>
-                                  
-                                  <% end %>
-                                  
-                              </div>
-                          </div>
-                      </div>
-                      <div class="card-body">
-                          <div class="text-muted h7 mb-2"> <i class="far fa-clock"></i><%=time_ago_in_words(post.created_at)%> ago</div>
-                              <p>
-                                <%=post.body%>
-                              </p>
-                                      <!-- Preview Image -->
-                              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                              
-                                  <% post.images.each_with_index do |image, index| %>
-                                  
-                                      <li data-target="#carouselExampleIndicators" data-slide-to="<%=index%>" class="<%if index == 0 %> active <%end%>"></li>
-                                  
-                                  <%end%>
-                                  
-                                </ol>
-                                <div class="carousel-inner">
-                              
-                                  <% post.images.each_with_index do |image, index| %>
-                                  
-                                      <div class="carousel-item <%if index == 0 %> active <%end%>">
-                                  
-                                    <%= image_tag(image, class: "d-block w-100 h-10")%> <br><br>
-                                  
-                                      </div>
-                              
-                                  <%end%>
-
-                                </div>
-                              
-                                  <% if post.images.count > 1 %>
-                                  
-                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                      <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                      <span class="sr-only">Next</span>
-                                    </a>
-                                  <% end %>
-                              </div>
-                          </div>
-                      <hr>
-                      <div class="card-footer">
-                        <small class="float-left likes-count-<%=post.id%>" id='likes_count'>
-                          <%= post.likes.count %> <%= (post.likes.count) == 1 ? 'Like' : 'Likes'%>
-                        </small>
-                        <small class="float-right comment-count-<%=post.id%>">
-                          <%if post.comments.count > 0 %> 
-                            <%= post.comments.count %> <%= (post.likes.count) == 1 ? 'Comment' : 'Comments'%> 
-                          <%end%>
-                        </small> 
-                      </div>
-                      <div class="card-footer">
-                        <span id="likes-<%=post.id%>">
-                          <% if already_liked_by_user(current_user.id, post.id) %>
-                            <%= link_to ('<i class="fas fa-thumbs-up"> Like</i>').html_safe, like_path(post), remote: true, method: :delete, class:"card-link"%>
-                          <% else %>
-                            <%= link_to ('<i class="fas fa-thumbs-up text-muted"> Like</i>').html_safe, post_likes_path(post), remote: true, method: :post, form: {style: 'display:inline-block;'}, class:"btn btn-link btn-sm text-muted text-decoration-none"%>
-                          <%end%>
-                        </span>
-                          <a class=" btn btn-link card-link float-right text-primary" onclick="myFunc(<%=post.id%>)"><i class="fa fa-comment"></i> Comment</a>
-                      </div>
-                    <section class="container">
-                      <div>
-                        <div id="comments-<%=post.id%>">
-                            <%= render 'comments/comment', comments: post.comments.last(5)%>
-                        </div>
-                        <%=link_to ('<i class="fa fa-list" aria-hidden="true"> Show all comments</i>').html_safe, post_path(post) %>
-                        <hr>
-                        <div class="comment-form">
-                            <%= render 'comments/form', post: post %>
-                        </div>
-                      </div>
-                    </section>
                   </div>
-              <%end%>
-            </div>
-              <div class="col-lg-3">
-                <div class="card social-timeline-card">
-                    <div class="card-body">
-              
-                      <% friend_requests = get_all_friend_requests(current_user.id)%>
-                      <% senders = get_all_senders(friend_requests) %>
-                              <h5 class="card-title">Friend Request</h5>
-                      <% if friend_requests.present? %>
-                              <ul class="friend-list">
-
-                              <% senders.each_with_index do |sender, index| %>
-                                  <li>
-                                      <div class="left">
-                                      <% if sender.avatar.attached?%>
-                                        <%= link_to image_tag(sender.avatar), profile_path(user_id: sender.id)%>
-                                      <%else%>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
-                                      <% end %>
-
-                                      </div>
-                                      <div class="right">
-                                          <h3><%= sender.first_name + " " + sender.last_name%></h3>
-                                          <%= link_to 'Accept', request_path(friend_requests[index]), method: :patch, class: "btn btn-sm btn-primary"%>
-                                          <%= link_to 'Reject', request_path(friend_requests[index]), method: :delete, class: "btn btn-sm btn-danger"%>
-                                      </div>
-                                  </li>
-                                  <hr>
-                              <% end %>
-                              </ul>
-                      <% else %>
-                          <p>No friend requests</p>
-                      <% end %>
-                    </div>
+                  <div class="modal-body">
+                    <%=image_tag @user.avatar, class: "user-profile"%>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
                 </div>
+              </div>
             </div>
-
+          <% else %>
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal">
+              <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Profile Photo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="user-profile">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% if @user.first_name %>                
+            <h3><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></h3>
+          <% else %>
+            <h3>Add your name</h3>
+          <% end %>
+          <% if @user.bio %>
+            <p><%=@user.bio.capitalize%></p>
+          <% else %>
+            <p>Add your bio</p>
+          <% end %>
+        </div>
+        <div class="row ">
+          <div class="col-lg-12">
+            <ul class=" nav nav-tabs justify-content-center s-nav">
+              <% request_received = request_received(@user.id)[0]%>
+              <% request_object = get_specific_accepted_request(@user.id)[0]%>
+              <% if !received_or_sent_request?(@user.id) and current_user != @user and !friend?(@user.id) %>
+                <%=link_to ('<i class="fa fa-user-plus fa-lg" aria-hidden="true"></i>').html_safe, requests_path(receiver_id: @user.id), method: :post, class: "btn btn-link active"%> &nbsp
+              <% elsif request_sent?(@user.id) and current_user != @user and !friend?(@user.id) %>
+                <%=link_to ('<i class="fa fa-user-clock fa-lg" aria-hidden="true"></i>').html_safe, request.referer, class: "btn btn-link active", style: "color: blue !important;"%> &nbsp
+              <% elsif request_received.present? and current_user != @user and !friend?(@user.id) %>
+                <%= link_to 'Accept', request_path(request_received.id), method: :patch, class: "btn btn-sm btn-primary"%>
+                <%= link_to 'Reject', request_path(request_received.id), method: :delete, class: "btn btn-sm btn-danger"%>
+              <% elsif current_user != @user and friend?(@user.id) %>
+                <%= link_to ('<i class="fa fa-user-check fa-lg active" style="color: blue;"></i>').html_safe, request_path(request_object.id), method: :delete, data: {confirm: "are youo sure to unfriend?"} %>
+              <% elsif current_user == @user %>
+                <li><%= link_to ('<i class="fas fa-user-edit fa-lg"></i>').html_safe, edit_user_registration_path, class: "btn btn-link active" %></li> &nbsp
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="h5 text-blue"><%=@user.email%></div>
+            <div class="h7 "><strong>Name :</strong><%=@user.first_name.capitalize%> <%=@user.last_name.capitalize%></div>
+            <div class="h7"><strong>About :</strong>
+              <%=@user.about%>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="h6 text-muted"> <%= link_to " Friends", friends_profile_path(user_id: @user)%> </div>
+              <% all_friends = get_all_friends(@user.id)%>
+              <div class="h5"><%= all_friends.count%></div>
+            </li>
+            <li class="list-group-item">
+              <div class="h6 text-muted">Posts</div>
+              <div class="h5"><%= @user.posts.count%> </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 gedf-main">
+        <%@user.posts.each do |post|%>
+          <div class="card social-timeline-card">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="mr-2">
+                    <% if @user.avatar.attached? %>
+                      <%=link_to image_tag(@user.avatar, class: "rounded-circle", width: "45"), profile_path(user_id: post.user.id)%>
+                    <% else %>
+                      <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
+                    <% end %> 
+                  </div>
+                  <div class="ml-2">
+                    <div class="h5 m-0 text-blue"><%= link_to @user.first_name.capitalize + " " + @user.last_name.capitalize, profile_path(user_id: post.user.id) %></div>
+                    <div class="h7 text-muted"><i class="far fa-clock"></i> <span> <%=time_ago_in_words(post.created_at)%> </span> ago</div>
+                  </div>
+                </div>
+                <div>
+                  <% if post.user == current_user%>
+                    <div class="dropdown">
+                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                        <div class="h6 dropdown-header">Configuration</div>
+                        <%= link_to ("<i class='fas fa-edit'> Edit</i>").html_safe, edit_post_path(post), class:"dropdown-item" %>
+                        <%= link_to ("<i class='fas fa-trash'> Delete</i>").html_safe, post_path(post), method: :delete, data: {confirm: "are your sure" }, class:"dropdown-item" %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="text-muted h7 mb-2"> <i class="far fa-clock"></i><%=time_ago_in_words(post.created_at)%> ago</div>
+                <p>
+                  <%=post.body%>
+                </p>
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <% post.images.each_with_index do |image, index| %>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="<%=index%>" class="<%if index == 0 %> active <%end%>"></li>
+                    <%end%>
+                  </ol>
+                  <div class="carousel-inner">
+                    <% post.images.each_with_index do |image, index| %>
+                      <div class="carousel-item <%if index == 0 %> active <%end%>">
+                        <%= image_tag(image, class: "d-block w-100 h-10")%> <br><br>
+                      </div>
+                    <%end%>
+                  </div>
+                  <% if post.images.count > 1 %>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  <% end %>
+                </div>
+              </div>
+              <hr>
+              <div class="card-footer">
+                <small class="float-left likes-count-<%=post.id%>" id='likes_count'>
+                  <%= post.likes.count %> <%= (post.likes.count) == 1 ? 'Like' : 'Likes'%>
+                </small>
+                <small class="float-right comment-count-<%=post.id%>">
+                  <%if post.comments.count > 0 %> 
+                    <%= post.comments.count %> <%= (post.likes.count) == 1 ? 'Comment' : 'Comments'%> 
+                  <%end%>
+                </small> 
+              </div>
+              <div class="card-footer">
+                <span id="likes-<%=post.id%>">
+                  <% if already_liked_by_user(current_user.id, post.id) %>
+                    <%= link_to ('<i class="fas fa-thumbs-up"> Like</i>').html_safe, like_path(post), remote: true, method: :delete, class:"card-link"%>
+                  <% else %>
+                    <%= link_to ('<i class="fas fa-thumbs-up text-muted"> Like</i>').html_safe, post_likes_path(post), remote: true, method: :post, form: {style: 'display:inline-block;'}, class:"btn btn-link btn-sm text-muted text-decoration-none"%>
+                  <%end%>
+                </span>
+                  <a class=" btn btn-link card-link float-right text-primary" onclick="myFunc(<%=post.id%>)"><i class="fa fa-comment"></i> Comment</a>
+                </div>
+                <section class="container">
+                  <div>
+                    <div id="comments-<%=post.id%>">
+                      <%= render 'comments/comment', comments: post.comments.last(5)%>
+                    </div>
+                      <%=link_to ('<i class="fa fa-list" aria-hidden="true"> Show all comments</i>').html_safe, post_path(post) %>
+                      <hr>
+                    <div class="comment-form">
+                      <%= render 'comments/form', post: post %>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            <%end%>
+          </div>
+          <div class="col-lg-3">
+            <div class="card social-timeline-card">
+              <div class="card-body">
+                <% friend_requests = get_all_friend_requests(current_user.id)%>
+                <% senders = get_all_senders(friend_requests) %>
+                <h5 class="card-title">Friend Request</h5>
+                <% if friend_requests.present? %>
+                  <ul class="friend-list">
+                    <% senders.each_with_index do |sender, index| %>
+                      <li>
+                        <div class="left">
+                          <% if sender.avatar.attached?%>
+                            <%= link_to image_tag(sender.avatar), profile_path(user_id: sender.id)%>
+                          <%else%>
+                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="default-photo" class="rounded-circle">
+                          <% end %>
+                        </div>
+                        <div class="right">
+                         <h3><%= link_to sender.first_name + " " + sender.last_name, profile_path(user_id: sender.id)%></h3>
+                          <%= link_to 'Accept', request_path(friend_requests[index]), method: :patch, class: "btn btn-sm btn-primary"%>
+                          <%= link_to 'Reject', request_path(friend_requests[index]), method: :delete, class: "btn btn-sm btn-danger"%>
+                        </div>
+                      </li>
+                      <hr>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <p>No friend requests</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+      </div>
     </div>
 </main>
 

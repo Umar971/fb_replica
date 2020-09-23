@@ -40,7 +40,7 @@
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">        
             <% @post.images.each_with_index do |image, index| %>
-                <li data-target="#carouselExampleIndicators" data-slide-to="<%=index%>" class="<%if index == 0 %> active <%end%>"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="<%=index%>" class="<%if index == 0 %> active <%end%>"></li>
             <%end%>
           </ol>
           <div class="carousel-inner">
